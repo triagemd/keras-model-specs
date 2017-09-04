@@ -31,7 +31,7 @@ PREPROCESS_FUNCTIONS = {
 class ModelSpec(object):
 
     @classmethod
-    def get(cls, base_spec_name, overrides={}):
+    def get(cls, base_spec_name, **overrides):
         with open(os.path.join(os.path.split(__file__)[0], 'model_specs.json')) as file:
             base_specs = json.load(file)
         spec = base_specs.get(base_spec_name, {})
