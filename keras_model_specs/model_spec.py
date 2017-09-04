@@ -1,6 +1,7 @@
 import os
 import json
 import numpy as np
+import importlib
 
 from six import string_types
 from keras.preprocessing.image import load_img
@@ -29,6 +30,9 @@ PREPROCESS_FUNCTIONS = {
 }
 
 
+SPEC_FIELDS = ['name', 'klass', 'target_size', 'preprocess_func', 'preprocess_args']
+
+
 class ModelSpec(object):
 
     @classmethod
@@ -39,7 +43,10 @@ class ModelSpec(object):
         if len(spec) == 0 and len(overrides) == 0:
             return None
         spec['name'] = base_spec_name
-        spec.update(overrides)
+        for field in SPEC_FIELDS:
+            # Ignore incoming None fields
+            if overrides.get(field) is not None:
+                spec[field] = overrides[field]
         return ModelSpec(spec)
 
     def __init__(self, spec):
@@ -52,7 +59,7 @@ class ModelSpec(object):
         self.__dict__.update(spec)
 
         if isinstance(self.klass, str):
-            self.klass = None
+            self.klass = self._get_module_class(self.klass)
 
         if isinstance(self.target_size, string_types):
             self.target_size = self.target_size.split(',')
@@ -71,3 +78,8 @@ class ModelSpec(object):
         image_data = np.expand_dims(image_data, axis=0)
         image_data = preprocess_input(image_data, self.preprocess_args)
         return image_data
+
+    def _get_module_class(self, module_class_path):
+        module_and_class_parts = module_class_path.split('.')
+        module = importlib.import_module('.'.join(module_and_class_parts[:-1]))
+        return getattr(module, module_and_class_parts[-1])
