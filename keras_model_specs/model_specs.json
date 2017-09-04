@@ -1,0 +1,32 @@
+{
+  "inception_v3": {
+    "klass": "keras.applications.inception_v3.InceptionV3",
+    "preprocess_func": "between_plus_minus_1",
+    "target_size": "224,224,3"
+  },
+  "mobilenet_v1": {
+    "klass": "keras.applications.mobilenet.MobileNet",
+    "preprocess_func": "between_plus_minus_1",
+    "target_size": "224,224,3"
+  },
+  "resnet50": {
+    "klass": "keras.applications.resnet50.ResNet50",
+    "preprocess_func": "mean_subtraction",
+    "target_size": "224,224,3"
+  },
+  "vgg16": {
+    "klass": "keras.applications.vgg16.VGG16",
+    "preprocess_func": "mean_subtraction",
+    "target_size": "224,224,3"
+  },
+  "vgg19": {
+    "klass": "keras.applications.vgg19.VGG19",
+    "preprocess_func": "mean_subtraction",
+    "target_size": "224,224,3"
+  },
+  "xception": {
+    "klass": "keras.applications.xception.Xception",
+    "preprocess_func": "between_plus_minus_1",
+    "target_size": "299,299,3"
+  }
+}
