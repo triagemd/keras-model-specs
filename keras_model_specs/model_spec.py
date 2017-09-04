@@ -2,6 +2,7 @@ import os
 import json
 import numpy as np
 
+from six import string_types
 from keras.preprocessing.image import load_img
 
 
@@ -52,10 +53,16 @@ class ModelSpec(object):
 
         if isinstance(self.klass, str):
             self.klass = None
-        if isinstance(self.target_size, str):
-            self.target_size = [int(v) for v in self.target_size.split(',')]
+
+        if isinstance(self.target_size, string_types):
+            self.target_size = self.target_size.split(',')
+        if self.target_size:
+            self.target_size = [int(v) for v in self.target_size]
+
         if isinstance(self.preprocess_args, str):
-            self.preprocess_args = [int(v) for v in self.preprocess_args.split(',')]
+            self.preprocess_args = self.preprocess_args.split(',')
+        if self.preprocess_args:
+            self.preprocess_args = [int(v) for v in self.preprocess_args]
 
     def load_image(self, image_path):
         preprocess_input = PREPROCESS_FUNCTIONS[self.preprocess_func]

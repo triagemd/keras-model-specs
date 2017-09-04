@@ -15,6 +15,7 @@ setup(
     ],
     install_requires=[
         'Keras',
-        'Pillow'
+        'Pillow',
+        'six'
     ]
 )
