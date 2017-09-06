@@ -1,0 +1,10 @@
+-e .
+
+pytest
+pytest-cov
+flake8
+autoflake
+pep8
+autopep8
+
+tensorflow

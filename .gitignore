@@ -1,0 +1,6 @@
+.venv/
+.cache/
+/dist/
+/build/
+*.egg-info/
+tmp/
