@@ -3,7 +3,6 @@ import json
 import numpy as np
 import importlib
 
-from six import string_types
 from keras.preprocessing.image import load_img
 
 

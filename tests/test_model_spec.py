@@ -21,9 +21,9 @@ def test_returns_nonexistent_with_overrides():
     spec = ModelSpec.get(
         'nonexistent_v1',
         klass='keras.applications.mobilenet.MobileNet',
-        target_size='224,224,3',
+        target_size=[224, 224, 3],
         preprocess_func='mean_subtraction',
-        preprocess_args='1,2,3'
+        preprocess_args=[1, 2, 3]
     )
     assert spec is not None
     assert spec.klass == MobileNet
@@ -36,9 +36,9 @@ def test_returns_existing_with_overrides():
     spec = ModelSpec.get(
         'mobilenet_v1',
         klass='keras.applications.mobilenet.MobileNet',
-        target_size='512,512,3',
+        target_size=[512, 512, 3],
         preprocess_func='mean_subtraction',
-        preprocess_args='1,2,3'
+        preprocess_args=[1, 2, 3]
     )
     assert spec is not None
     assert spec.klass == MobileNet
