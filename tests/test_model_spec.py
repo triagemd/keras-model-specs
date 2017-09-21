@@ -80,6 +80,22 @@ def test_load_image_for_all_base_specs():
         assert image_data.any()
 
 
+def test_model_densenet121():
+    assert_model_predict('densenet121', 1000)
+
+
+def test_model_densenet161():
+    assert_model_predict('densenet161', 1000)
+
+
+def test_model_densenet169():
+    assert_model_predict('densenet169', 1000)
+
+
+# def test_model_inception_resnet_v2():
+#     assert_model_predict('inception_resnet_v2', 1000)
+
+
 def test_model_inception_v3():
     assert_model_predict('inception_v3', 1000)
 
