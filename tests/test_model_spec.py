@@ -1,4 +1,5 @@
 from keras.applications.mobilenet import MobileNet
+from keras.optimizers import SGD
 
 from keras_model_specs import ModelSpec
 
@@ -67,3 +68,14 @@ def test_load_image_for_all_base_specs():
         spec = ModelSpec.get(name, preprocess_args=[1, 2, 3])
         image_data = spec.load_image('tests/files/cat.jpg')
         assert image_data.any()
+
+
+def test_load_model_for_all_base_specs():
+    for name in EXPECTED_BASE_SPECS:
+        spec = ModelSpec.get(name, preprocess_args=[1, 2, 3])
+        model = spec.klass()
+        sgd = SGD(lr=1e-2, decay=1e-6, momentum=0.9, nesterov=True)
+        model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
+        image_data = spec.load_image('tests/files/cat.jpg')
+        out = model.predict(image_data)
+        print(out)

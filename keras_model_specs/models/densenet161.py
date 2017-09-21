@@ -24,20 +24,35 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
+import keras.backend as K
+
 from keras.models import Model
 from keras.layers import Input, merge, ZeroPadding2D
 from keras.layers.core import Dense, Dropout, Activation
 from keras.layers.convolutional import Convolution2D
 from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D, MaxPooling2D, GlobalMaxPooling2D
 from keras.layers.normalization import BatchNormalization
-import keras.backend as K
 from keras.utils.data_utils import get_file
 
 from .custom_layers import Scale
 
 
-def DenseNet161(nb_dense_block=4, growth_rate=48, nb_filter=96, reduction=0.0, dropout_rate=0.0, weight_decay=1e-4,
-                classes=1000, weights_path=None, include_top=True, pooling=None, input_shape=None):
+WEIGHTS_PATH = 'https://s3.amazonaws.com/keras-models-a5e0b7ad-6cd4-46aa-8d40-40b791f21572/imagenet/densenet161_weights_tf.h5'
+WEIGHTS_PATH_NO_TOP = None
+
+
+def DenseNet161(
+        include_top=True,
+        pooling=None,
+        weights='imagenet',
+        classes=1000,
+        input_shape=(224, 224, 3),
+        nb_dense_block=4,
+        growth_rate=48,
+        nb_filter=96,
+        reduction=0.0,
+        dropout_rate=0.0,
+        weight_decay=1e-4):
     '''Instantiate the DenseNet 161 architecture,
         # Arguments
             nb_dense_block: number of dense blocks to add to end
@@ -60,10 +75,10 @@ def DenseNet161(nb_dense_block=4, growth_rate=48, nb_filter=96, reduction=0.0, d
     global concat_axis
     if K.image_dim_ordering() == 'tf':
         concat_axis = 3
-        img_input = Input(shape=(224, 224, 3), name='data')
+        img_input = Input(shape=input_shape, name='data')
     else:
         concat_axis = 1
-        img_input = Input(shape=(3, 224, 224), name='data')
+        img_input = Input(shape=tuple(reversed(input_shape)), name='data')
 
     # From architecture for ImageNet (Table 1 in the paper)
     nb_filter = 96
@@ -93,25 +108,42 @@ def DenseNet161(nb_dense_block=4, growth_rate=48, nb_filter=96, reduction=0.0, d
     x = BatchNormalization(epsilon=eps, axis=concat_axis, name='conv' + str(final_stage) + '_blk_bn')(x)
     x = Scale(axis=concat_axis, name='conv' + str(final_stage) + '_blk_scale')(x)
     x = Activation('relu', name='relu' + str(final_stage) + '_blk')(x)
+    x = GlobalAveragePooling2D(name='pool' + str(final_stage))(x)
 
-    if pooling == 'max':
-        x = GlobalMaxPooling2D(name='pool' + str(final_stage))(x)
+    if include_top:
+        x = Dense(classes, name='fc6')(x)
+        x = Activation('softmax', name='prob')(x)
     else:
-        x = GlobalAveragePooling2D(name='pool' + str(final_stage))(x)
+        if pooling == 'max':
+            x = GlobalMaxPooling2D(name='pool' + str(final_stage))(x)
+        else:
+            x = GlobalAveragePooling2D(name='pool' + str(final_stage))(x)
 
-    x = Dense(classes, name='fc6')(x)
-    x = Activation('softmax', name='prob')(x)
+    model = Model(img_input, x, name='densenet161')
 
-    model = Model(img_input, x, name='densenet')
-
-    if weights_path is not None:
-        weights = get_file(fname='densenet161', origin=weights_path, cache_subdir='models')
-        model.load_weights(weights, by_name=True)
-
-    if not include_top:
-        model.layers.pop()
-        model.layers.pop()
-        model.layers[-1].outbound_nodes = []
+    # load weights
+    if weights == 'imagenet':
+        if K.image_data_format() == 'channels_first':
+            if K.backend() == 'tensorflow':
+                warnings.warn('You are using the TensorFlow backend, yet you '
+                              'are using the Theano '
+                              'image data format convention '
+                              '(`image_data_format="channels_first"`). '
+                              'For best performance, set '
+                              '`image_data_format="channels_last"` in '
+                              'your Keras config '
+                              'at ~/.keras/keras.json.')
+        if include_top:
+            weights_path = get_file(
+                'densenet161_weights_tf.h5',
+                WEIGHTS_PATH,
+                cache_subdir='models',
+                md5_hash='52b67f703cc1bb033f6bf33b7e3aaf7d')
+        else:
+            raise ValueError('no_top weights not available for this architecture')
+    else:
+        weights_path = weights
+    model.load_weights(weights_path)
 
     return model
 

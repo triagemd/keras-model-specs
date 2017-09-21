@@ -24,6 +24,7 @@ from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D, Globa
 from keras.layers import Input, Dropout, Dense, Flatten, Activation
 from keras.layers.normalization import BatchNormalization
 from keras.layers.merge import concatenate
+from keras.utils.data_utils import get_file
 from keras import regularizers
 from keras import initializers
 from keras.models import Model
@@ -239,7 +240,13 @@ def inception_v4_base(input):
     return net
 
 
-def InceptionV4(weights, classes=1000, dropout_keep_prob=0.2, include_top=True, input_shape=None, pooling=None):
+def InceptionV4(
+        include_top=True,
+        pooling=None,
+        weights='imagenet',
+        classes=1001,
+        input_shape=(299, 299, 3),
+        dropout_keep_prob=0.2):
     '''
 
     Args:
@@ -255,7 +262,7 @@ def InceptionV4(weights, classes=1000, dropout_keep_prob=0.2, include_top=True, 
 
     # Input Shape is 299 x 299 x 3 (tf) or 3 x 299 x 299 (th)
     if K.image_data_format() == 'channels_first':
-        inputs = Input((3, 299, 299))
+        inputs = Input(tuple(reversed(input_shape)))
     else:
         inputs = Input(input_shape)
 
@@ -304,7 +311,3 @@ def InceptionV4(weights, classes=1000, dropout_keep_prob=0.2, include_top=True, 
                 md5_hash='9296b46b5971573064d12e4669110969')
         model.load_weights(weights_path, by_name=True)
     return model
-
-
-def create_model(classes=1001, dropout_prob=0.2, weights=None, include_top=True):
-    return InceptionV4(classes, dropout_prob, weights, include_top)

@@ -3,15 +3,21 @@
 # without a license.
 
 import sys
-from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Flatten, \
-    merge, Activation
+
+from keras import backend as K
+from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Flatten, merge, Activation
 from keras.layers.normalization import BatchNormalization
 from keras.models import Model
-from keras import backend as K
 from keras.utils.data_utils import get_file
+
 from .custom_layers import Scale
 
+
 sys.setrecursionlimit(3000)
+
+
+WEIGHTS_PATH = 'https://s3.amazonaws.com/keras-models-a5e0b7ad-6cd4-46aa-8d40-40b791f21572/imagenet/resnet152_weights_tf.h5'
+WEIGHTS_PATH_NO_TOP = None
 
 
 def identity_block(input_tensor, kernel_size, filters, stage, block):
@@ -94,7 +100,12 @@ def conv_block(input_tensor, kernel_size, filters, stage, block, strides=(2, 2))
     return x
 
 
-def ResNet152(weights_path=None, input_shape=None, pooling=None, include_top=True, classes=1000):
+def ResNet152(
+        include_top=True,
+        pooling=None,
+        weights='imagenet',
+        classes=1000,
+        input_shape=(224, 224, 3)):
     '''Instantiate the ResNet152 architecture,
     # Arguments
         weights_path: path to pretrained weight file
@@ -110,7 +121,7 @@ def ResNet152(weights_path=None, input_shape=None, pooling=None, include_top=Tru
         img_input = Input(input_shape, name='data')
     else:
         bn_axis = 1
-        img_input = Input(shape=(3, 224, 224), name='data')
+        img_input = Input(shape=tuple(reversed(input_shape)), name='data')
 
     x = ZeroPadding2D((3, 3), name='conv1_zeropadding')(img_input)
     x = Convolution2D(64, 7, 7, subsample=(2, 2), name='conv1', bias=False)(x)
@@ -135,20 +146,41 @@ def ResNet152(weights_path=None, input_shape=None, pooling=None, include_top=Tru
     x = identity_block(x, 3, [512, 512, 2048], stage=5, block='b')
     x = identity_block(x, 3, [512, 512, 2048], stage=5, block='c')
 
-    x_fc = AveragePooling2D((7, 7), name='avg_pool')(x)
-    x_fc = Flatten()(x_fc)
-    x_fc = Dense(classes, activation='softmax', name='fc1000')(x_fc)
+    x = AveragePooling2D((7, 7), name='avg_pool')(x)
+    x = Flatten()(x)
 
-    model = Model(img_input, x_fc)
+    if include_top:
+        x = Dense(classes, activation='softmax', name='fc1000')(x)
+    else:
+        if pooling == 'avg':
+            x = GlobalAveragePooling2D()(x)
+        elif pooling == 'max':
+            x = GlobalMaxPooling2D()(x)
+
+    model = Model(img_input, x, name='resnet152')
 
     # load weights
-    if weights_path:
-        weights = get_file(fname='resnet152', origin=weights_path, cache_subdir='models')
-        model.load_weights(weights, by_name=True)
-
-    if not include_top:
-        model.layers.pop()
-        model.layers.pop()
-        model.layers[-1].outbound_nodes = []
+    if weights == 'imagenet':
+        if K.image_data_format() == 'channels_first':
+            if K.backend() == 'tensorflow':
+                warnings.warn('You are using the TensorFlow backend, yet you '
+                              'are using the Theano '
+                              'image data format convention '
+                              '(`image_data_format="channels_first"`). '
+                              'For best performance, set '
+                              '`image_data_format="channels_last"` in '
+                              'your Keras config '
+                              'at ~/.keras/keras.json.')
+        if include_top:
+            weights_path = get_file(
+                'resnet152_weights_tf.h5',
+                WEIGHTS_PATH,
+                cache_subdir='models',
+                md5_hash='1d341ac3e61cd7f5338a90db32535ca2')
+        else:
+            raise ValueError('no_top weights not available for this architecture')
+    else:
+        weights_path = weights
+    model.load_weights(weights_path)
 
     return model
