@@ -242,7 +242,6 @@ def inception_v4_base(input):
 
 def InceptionV4(
         include_top=True,
-        pooling=None,
         weights='imagenet',
         classes=1001,
         input_shape=(299, 299, 3),
@@ -272,16 +271,11 @@ def InceptionV4(
     # Final pooling and prediction
     if include_top:
         # 1 x 1 x 1536
-        x = AveragePooling2D((8, 8), padding='valid')(x)
+        x = AveragePooling2D((8,8), padding='valid')(x)
         x = Dropout(dropout_keep_prob)(x)
         x = Flatten()(x)
         # 1536
         x = Dense(units=classes, activation='softmax')(x)
-    else:
-        if pooling == 'max':
-            x = GlobalMaxPooling2D()(x)
-        else:
-            x = GlobalAveragePooling2D()(x)
 
     model = Model(inputs, x, name='inception_v4')
 
