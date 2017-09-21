@@ -4,11 +4,6 @@
     "preprocess_func": "between_plus_minus_1",
     "target_size": [224, 224, 3]
   },
-  "inception_v4": {
-    "klass": "keras_model_specs.models.inception_v4.InceptionV4",
-    "preprocess_func": "between_plus_minus_1",
-    "target_size": [299, 299, 3]
-  },
   "mobilenet_v1": {
     "klass": "keras.applications.mobilenet.MobileNet",
     "preprocess_func": "between_plus_minus_1",
