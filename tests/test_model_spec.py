@@ -30,6 +30,7 @@ def test_returns_nonexistent_with_overrides():
     assert spec.target_size == [224, 224, 3]
     assert spec.preprocess_func == 'mean_subtraction'
     assert spec.preprocess_args == [1, 2, 3]
+    assert spec.preprocess_input is not None
 
 
 def test_returns_existing_with_overrides():
@@ -45,6 +46,7 @@ def test_returns_existing_with_overrides():
     assert spec.target_size == [512, 512, 3]
     assert spec.preprocess_func == 'mean_subtraction'
     assert spec.preprocess_args == [1, 2, 3]
+    assert spec.preprocess_input is not None
 
 
 def test_load_image_for_all_base_specs():
