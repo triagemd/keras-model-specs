@@ -7,7 +7,7 @@ import warnings
 
 from keras import backend as K
 from keras.layers import Input, Dense, Conv2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Flatten, Activation
-from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D, GlobalMaxPooling2D
+from keras.layers.pooling import GlobalAveragePooling2D, GlobalMaxPooling2D
 from keras.layers.normalization import BatchNormalization
 from keras.layers.merge import add
 from keras.models import Model
