@@ -5,6 +5,9 @@ from keras_model_specs import ModelSpec
 
 
 EXPECTED_BASE_SPECS = [
+    'densenet121',
+    'densenet161',
+    'densenet169',
     'inception_resnet_v2',
     'inception_v3',
     'inception_v4',
