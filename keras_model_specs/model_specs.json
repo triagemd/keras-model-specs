@@ -1,9 +1,4 @@
 {
-  "inception_resnet_v2": {
-    "klass": "keras.applications.inception_resnet_v2.InceptionResNetV2",
-    "preprocess_func": "between_plus_minus_1",
-    "target_size": [299, 299, 3]
-  },
   "inception_v3": {
     "klass": "keras.applications.inception_v3.InceptionV3",
     "preprocess_func": "between_plus_minus_1",
