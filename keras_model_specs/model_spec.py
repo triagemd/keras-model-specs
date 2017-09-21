@@ -3,10 +3,11 @@ import json
 import numpy as np
 import importlib
 
+from six import string_types
 from keras.preprocessing.image import load_img
 
 
-def between_plus_minus_1(x, args):
+def between_plus_minus_1(x, args=None):
     # equivalent to keras.applications.mobilenet.preprocess_input
     x /= 255.
     x -= 0.5
@@ -14,7 +15,7 @@ def between_plus_minus_1(x, args):
     return x
 
 
-def mean_subtraction(x, args):
+def mean_subtraction(x, args=None):
     # equivalent to keras.applications.imagenet_utils.preprocess_input (with channels_first)
     mean_r, mean_g, mean_b = args
     x -= [mean_r, mean_g, mean_b]
@@ -57,15 +58,16 @@ class ModelSpec(object):
 
         self.__dict__.update(spec)
 
-        if isinstance(self.klass, str):
+        self.preprocess_input = PREPROCESS_FUNCTIONS[self.preprocess_func]
+
+        if isinstance(self.klass, string_types):
             self.klass = self._get_module_class(self.klass)
 
     def load_image(self, image_path):
-        preprocess_input = PREPROCESS_FUNCTIONS[self.preprocess_func]
         img = load_img(image_path, target_size=self.target_size[:2])
         image_data = np.asarray(img, dtype=np.float32)
         image_data = np.expand_dims(image_data, axis=0)
-        image_data = preprocess_input(image_data, self.preprocess_args)
+        image_data = self.preprocess_input(image_data, self.preprocess_args)
         return image_data
 
     def _get_module_class(self, module_class_path):
