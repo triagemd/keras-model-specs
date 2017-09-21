@@ -16,6 +16,16 @@ EXPECTED_BASE_SPECS = [
 ]
 
 
+def assert_model_predict(spec_name, expected_classes):
+    spec = ModelSpec.get(spec_name, preprocess_args=[1, 2, 3])
+    model = spec.klass()
+    sgd = SGD(lr=1e-2, decay=1e-6, momentum=0.9, nesterov=True)
+    model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
+    image_data = spec.load_image('tests/files/cat.jpg')
+    out = model.predict(image_data)
+    assert len(out.tolist()[0]) == expected_classes
+
+
 def test_has_all_base_specs():
     for name in EXPECTED_BASE_SPECS:
         spec = ModelSpec.get(name)
@@ -66,13 +76,33 @@ def test_load_image_for_all_base_specs():
         assert image_data.any()
 
 
-def test_load_model_for_all_base_specs():
-    for name in EXPECTED_BASE_SPECS:
-        expected_classes = 1001 if name == 'inception_v4' else 1000
-        spec = ModelSpec.get(name, preprocess_args=[1, 2, 3])
-        model = spec.klass()
-        sgd = SGD(lr=1e-2, decay=1e-6, momentum=0.9, nesterov=True)
-        model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
-        image_data = spec.load_image('tests/files/cat.jpg')
-        out = model.predict(image_data)
-        assert len(out.tolist()[0]) == expected_classes
+def test_model_inception_v3():
+    assert_model_predict('inception_v3', 1000)
+
+
+def test_model_inception_v4():
+    assert_model_predict('inception_v4', 1001)
+
+
+def test_model_mobilenet_v1():
+    assert_model_predict('mobilenet_v1', 1000)
+
+
+def test_model_resnet50():
+    assert_model_predict('resnet50', 1000)
+
+
+def test_model_resnet152():
+    assert_model_predict('resnet152', 1000)
+
+
+def test_model_vgg16():
+    assert_model_predict('vgg16', 1000)
+
+
+def test_model_vgg19():
+    assert_model_predict('vgg19', 1000)
+
+
+def test_model_xception():
+    assert_model_predict('xception', 1000)
