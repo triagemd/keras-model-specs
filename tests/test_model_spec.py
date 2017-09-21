@@ -5,6 +5,7 @@ from keras_model_specs import ModelSpec
 
 
 EXPECTED_BASE_SPECS = [
+    'inception_resnet_v2',
     'inception_v3',
     'inception_v4',
     'mobilenet_v1',
