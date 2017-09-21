@@ -1,6 +1,9 @@
 # Keras Implementation of Google's Inception-V4 Architecture is
 # Copyright 2017 Kent Sommer
 # https://github.com/kentsommer/keras-inceptionV4
+# 
+# This implementation has been modified and modifications are
+# Copyright 2017 Triage Technologies Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,11 +23,10 @@ import numpy as np
 import warnings
 # Keras Core
 from keras.layers.convolutional import MaxPooling2D, Convolution2D
-from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D, GlobalMaxPooling2D
+from keras.layers.pooling import AveragePooling2D
 from keras.layers import Input, Dropout, Dense, Flatten, Activation
 from keras.layers.normalization import BatchNormalization
 from keras.layers.merge import concatenate
-from keras.utils.data_utils import get_file
 from keras import regularizers
 from keras import initializers
 from keras.models import Model
@@ -271,7 +273,7 @@ def InceptionV4(
     # Final pooling and prediction
     if include_top:
         # 1 x 1 x 1536
-        x = AveragePooling2D((8,8), padding='valid')(x)
+        x = AveragePooling2D((8, 8), padding='valid')(x)
         x = Dropout(dropout_keep_prob)(x)
         x = Flatten()(x)
         # 1536
@@ -303,5 +305,5 @@ def InceptionV4(
                 WEIGHTS_PATH_NO_TOP,
                 cache_subdir='models',
                 md5_hash='9296b46b5971573064d12e4669110969')
-        model.load_weights(weights_path, by_name=True)
+        model.load_weights(weights_path)
     return model

@@ -68,10 +68,11 @@ def test_load_image_for_all_base_specs():
 
 def test_load_model_for_all_base_specs():
     for name in EXPECTED_BASE_SPECS:
+        expected_classes = 1001 if name == 'inception_v4' else 1000
         spec = ModelSpec.get(name, preprocess_args=[1, 2, 3])
         model = spec.klass()
         sgd = SGD(lr=1e-2, decay=1e-6, momentum=0.9, nesterov=True)
         model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
         image_data = spec.load_image('tests/files/cat.jpg')
         out = model.predict(image_data)
-        assert len(out.tolist()[0]) == 1000
+        assert len(out.tolist()[0]) == expected_classes
