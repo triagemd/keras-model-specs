@@ -74,4 +74,4 @@ def test_load_model_for_all_base_specs():
         model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
         image_data = spec.load_image('tests/files/cat.jpg')
         out = model.predict(image_data)
-        assert len(out.tolist()) == 1000
+        assert len(out.tolist()[0]) == 1000
