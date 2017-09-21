@@ -1,18 +1,19 @@
-'''
-Copyright 2017 TensorFlow Authors and Kent Sommer
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-   http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
+# Keras Implementation of Google's Inception-V4 Architecture is
+# Copyright 2017 Kent Sommer
+# https://github.com/kentsommer/keras-inceptionV4
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+#
+# You may obtain a copy of the License at
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-https://github.com/kentsommer/keras-inceptionV4
-
-'''
 import numpy as np
 
 # Sys
@@ -238,7 +239,7 @@ def inception_v4_base(input):
     return net
 
 
-def Inception_v4(weights, classes=1000, dropout_keep_prob=0.2, include_top=True, input_shape=None, pooling=None):
+def InceptionV4(weights, classes=1000, dropout_keep_prob=0.2, include_top=True, input_shape=None, pooling=None):
     '''
 
     Args:
@@ -306,4 +307,4 @@ def Inception_v4(weights, classes=1000, dropout_keep_prob=0.2, include_top=True,
 
 
 def create_model(classes=1001, dropout_prob=0.2, weights=None, include_top=True):
-    return Inception_v4(classes, dropout_prob, weights, include_top)
+    return InceptionV4(classes, dropout_prob, weights, include_top)

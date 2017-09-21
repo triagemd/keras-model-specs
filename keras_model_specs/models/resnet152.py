@@ -1,4 +1,6 @@
+# ResNet-152 in Keras was posted by flyyufelix
 # https://gist.github.com/flyyufelix/7e2eafb149f72f4d38dd661882c554a6
+# without a license.
 
 import sys
 from keras.layers import Input, Dense, Convolution2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Flatten, \

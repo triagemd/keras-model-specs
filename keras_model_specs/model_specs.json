@@ -1,6 +1,16 @@
 {
-   "densenet_161": {
-    "klass": "keras_model_specs.models.densenet_161.DenseNet161",
+   "densenet121": {
+    "klass": "keras_model_specs.models.densenet121.DenseNet121",
+    "preprocess_func": "mean_subtraction",
+    "target_size": [224, 224, 3]
+  },
+   "densenet161": {
+    "klass": "keras_model_specs.models.densenet161.DenseNet161",
+    "preprocess_func": "mean_subtraction",
+    "target_size": [224, 224, 3]
+  },
+   "densenet169": {
+    "klass": "keras_model_specs.models.densenet169.DenseNet169",
     "preprocess_func": "mean_subtraction",
     "target_size": [224, 224, 3]
   },
@@ -15,7 +25,7 @@
     "target_size": [224, 224, 3]
   },
   "inception_v4": {
-    "klass": "keras_model_specs.models.inception_v4.Inception_v4",
+    "klass": "keras_model_specs.models.inception_v4.InceptionV4",
     "preprocess_func": "between_plus_minus_1",
     "target_size": [299, 299, 3]
   },
@@ -30,7 +40,7 @@
     "target_size": [224, 224, 3]
   },
   "resnet152": {
-    "klass": "keras_model_specs.models.resnet_152.ResNet152",
+    "klass": "keras_model_specs.models.resnet152.ResNet152",
     "preprocess_func": "mean_subtraction",
     "target_size": [224, 224, 3]
   },

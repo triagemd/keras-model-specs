@@ -3,7 +3,20 @@ from keras.applications.mobilenet import MobileNet
 from keras_model_specs import ModelSpec
 
 
-EXPECTED_BASE_SPECS = ['inception_v3', 'mobilenet_v1', 'xception', 'resnet50', 'vgg16', 'vgg19']
+EXPECTED_BASE_SPECS = [
+    'densenet121',
+    'densenet161',
+    'densenet169',
+    'inception_resnet_v2',
+    'inception_v3',
+    'inception_v4',
+    'mobilenet_v1',
+    'xception',
+    'resnet50',
+    'resnet152',
+    'vgg16',
+    'vgg19'
+]
 
 
 def test_has_all_base_specs():
