@@ -1,3 +1,6 @@
+import pytest
+import os
+
 from keras.applications.mobilenet import MobileNet
 from keras.optimizers import SGD
 
@@ -100,6 +103,7 @@ def test_model_vgg16():
     assert_model_predict('vgg16', 1000)
 
 
+@pytest.mark.skipif('CI' in os.environ, reason='requires too much memory')
 def test_model_vgg19():
     assert_model_predict('vgg19', 1000)
 
