@@ -99,6 +99,7 @@ def test_model_resnet152():
     assert_model_predict('resnet152', 1000)
 
 
+@pytest.mark.skipif('CI' in os.environ, reason='requires too much memory')
 def test_model_vgg16():
     assert_model_predict('vgg16', 1000)
 
