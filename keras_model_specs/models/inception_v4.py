@@ -1,7 +1,7 @@
 # Keras Implementation of Google's Inception-V4 Architecture is
 # Copyright 2017 Kent Sommer
 # https://github.com/kentsommer/keras-inceptionV4
-# 
+#
 # This implementation has been modified and modifications are
 # Copyright 2017 Triage Technologies Inc.
 #
