@@ -58,7 +58,7 @@ class ModelSpec(object):
 
         self.__dict__.update(spec)
 
-        self.preprocess_input = PREPROCESS_FUNCTIONS[self.preprocess_func]
+        self.preprocess_input = lambda x: PREPROCESS_FUNCTIONS[self.preprocess_func](x, args=self.preprocess_args)
 
         if isinstance(self.klass, string_types):
             self.klass = self._get_module_class(self.klass)
@@ -67,7 +67,7 @@ class ModelSpec(object):
         img = load_img(image_path, target_size=self.target_size[:2])
         image_data = np.asarray(img, dtype=np.float32)
         image_data = np.expand_dims(image_data, axis=0)
-        image_data = self.preprocess_input(image_data, self.preprocess_args)
+        image_data = self.preprocess_input(image_data)
         return image_data
 
     def _get_module_class(self, module_class_path):
