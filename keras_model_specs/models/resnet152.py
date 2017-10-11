@@ -188,21 +188,20 @@ def ResNet152(
 
         weights_path = get_file('resnet152_weights_tf.h5', WEIGHTS_PATH, cache_subdir='models',
                                 md5_hash='1d341ac3e61cd7f5338a90db32535ca2')
-        if include_top:
-            model.load_weights(weights_path)
 
+        model.load_weights(weights_path)
+
+    if not include_top:
+        model.layers.pop()
+        model.layers.pop()
+        model.layers.pop()
+        model.layers[-1].outbound_nodes = []
+
+        if pooling == 'max':
+            pool = GlobalMaxPooling2D()(model.output)
         else:
-            model.load_weights(weights_path)
-            model.layers.pop()
-            model.layers.pop()
-            model.layers.pop()
-            model.layers[-1].outbound_nodes = []
+            pool = GlobalAveragePooling2D()(model.output)
 
-            if pooling == 'max':
-                pool = GlobalMaxPooling2D()(model.output)
-            else:
-                pool = GlobalAveragePooling2D()(model.output)
-
-            model = Model(model.input, pool)
+        model = Model(model.input, pool)
 
     return model
