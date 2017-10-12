@@ -201,12 +201,11 @@ def ResNet152(
         model.layers.pop()
         model.layers.pop()
         model.layers.pop()
-        model.layers[-1].outbound_nodes = []
 
         if pooling == 'max':
-            pool = GlobalMaxPooling2D()(model.output)
+            pool = GlobalMaxPooling2D()(model.layers[-1].output)
         else:
-            pool = GlobalAveragePooling2D()(model.output)
+            pool = GlobalAveragePooling2D()(model.layers[-1].output)
 
         model = Model(model.input, pool)
 
