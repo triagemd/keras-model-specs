@@ -126,11 +126,17 @@ def ResNet152(
         weights='imagenet',
         classes=1000,
         input_shape=(224, 224, 3)):
-    '''Instantiate the ResNet152 architecture,
-    # Arguments
-        weights_path: path to pretrained weight file
-    # Returns
-        A Keras model instance.
+    '''
+    Instantiate ResNet152 Architecture
+    Args:
+        include_top: Include classifier layer
+        pooling: Type of pooling to include
+        weights: If use pre-trained weights on imagenet
+        classes: Number of outputs in the classifier layer
+        input_shape: Input shape of images
+
+    Returns: ResNet152 model
+
     '''
     eps = 1.1e-5
 
