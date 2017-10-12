@@ -23,7 +23,7 @@ import numpy as np
 import warnings
 # Keras Core
 from keras.layers.convolutional import MaxPooling2D, Convolution2D
-from keras.layers.pooling import AveragePooling2D
+from keras.layers.pooling import AveragePooling2D, GlobalAveragePooling2D, GlobalMaxPooling2D
 from keras.layers import Input, Dropout, Dense, Flatten, Activation
 from keras.layers.normalization import BatchNormalization
 from keras.layers.merge import concatenate
@@ -246,6 +246,7 @@ def InceptionV4(
         include_top=True,
         weights='imagenet',
         classes=1001,
+        pooling='avg',
         input_shape=(299, 299, 3),
         dropout_keep_prob=0.2):
     '''
@@ -256,6 +257,7 @@ def InceptionV4(
         weights: 'imagenet' or None
         include_top: whether to include the top layers
         input_shape: input shape
+        pooling: type of pooling in the end (if no top layers is selected)
 
     Returns:
         logits: the logits outputs of the model.
@@ -299,11 +301,20 @@ def InceptionV4(
                 WEIGHTS_PATH,
                 cache_subdir='models',
                 md5_hash='9fe79d77f793fe874470d84ca6ba4a3b')
+            model.load_weights(weights_path)
         else:
             weights_path = get_file(
                 'inception-v4_weights_tf_dim_ordering_tf_kernels_notop.h5',
                 WEIGHTS_PATH_NO_TOP,
                 cache_subdir='models',
                 md5_hash='9296b46b5971573064d12e4669110969')
-        model.load_weights(weights_path)
+            model.load_weights(weights_path)
+
+            if pooling == 'max':
+                pool = GlobalMaxPooling2D()(model.output)
+            else:
+                pool = GlobalAveragePooling2D()(model.output)
+
+            model = Model(model.input, pool)
+
     return model

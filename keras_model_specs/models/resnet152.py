@@ -38,9 +38,7 @@ from keras.utils.data_utils import get_file
 
 from .custom_layers import Scale
 
-
 sys.setrecursionlimit(3000)
-
 
 WEIGHTS_PATH = 'https://s3.amazonaws.com/keras-models-a5e0b7ad-6cd4-46aa-8d40-40b791f21572/imagenet/resnet152_weights_tf.h5'
 WEIGHTS_PATH_NO_TOP = None
@@ -128,11 +126,17 @@ def ResNet152(
         weights='imagenet',
         classes=1000,
         input_shape=(224, 224, 3)):
-    '''Instantiate the ResNet152 architecture,
-    # Arguments
-        weights_path: path to pretrained weight file
-    # Returns
-        A Keras model instance.
+    '''
+    Instantiate ResNet152 Architecture
+    Args:
+        include_top: Include classifier layer
+        pooling: Type of pooling to include
+        weights: If use pre-trained weights on imagenet
+        classes: Number of outputs in the classifier layer
+        input_shape: Input shape of images
+
+    Returns: ResNet152 model
+
     '''
     eps = 1.1e-5
 
@@ -171,13 +175,7 @@ def ResNet152(
     x = AveragePooling2D((7, 7), name='avg_pool')(x)
     x = Flatten()(x)
 
-    if include_top:
-        x = Dense(classes, activation='softmax', name='fc1000')(x)
-    else:
-        if pooling == 'avg':
-            x = GlobalAveragePooling2D()(x)
-        elif pooling == 'max':
-            x = GlobalMaxPooling2D()(x)
+    x = Dense(classes, activation='softmax', name='fc1000')(x)
 
     model = Model(img_input, x, name='resnet152')
 
@@ -193,16 +191,23 @@ def ResNet152(
                               '`image_data_format="channels_last"` in '
                               'your Keras config '
                               'at ~/.keras/keras.json.')
-        if include_top:
-            weights_path = get_file(
-                'resnet152_weights_tf.h5',
-                WEIGHTS_PATH,
-                cache_subdir='models',
-                md5_hash='1d341ac3e61cd7f5338a90db32535ca2')
+
+        weights_path = get_file('resnet152_weights_tf.h5', WEIGHTS_PATH, cache_subdir='models',
+                                md5_hash='1d341ac3e61cd7f5338a90db32535ca2')
+
+        model.load_weights(weights_path)
+
+    if not include_top:
+        model.layers.pop()
+        model.layers.pop()
+        model.layers.pop()
+        model.layers[-1].outbound_nodes = []
+
+        if pooling == 'max':
+            pool = GlobalMaxPooling2D()(model.output)
         else:
-            raise ValueError('no_top weights not available for this architecture')
-    else:
-        weights_path = weights
-    model.load_weights(weights_path)
+            pool = GlobalAveragePooling2D()(model.output)
+
+        model = Model(model.input, pool)
 
     return model
