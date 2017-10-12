@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='keras-model-specs',
-    version='0.0.10',
+    version='0.0.11',
     description='A helper package for managing Keras model base architectures with overrides for target size and preprocessing functions.',
     author='Triage Technologies Inc.',
     author_email='ai@triage.com',
