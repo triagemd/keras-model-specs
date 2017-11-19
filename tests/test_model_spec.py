@@ -8,6 +8,7 @@ from keras_model_specs import ModelSpec
 
 
 EXPECTED_BASE_SPECS = [
+    'inception_resnet_v2',
     'inception_v3',
     'inception_v4',
     'mobilenet_v1',
@@ -77,6 +78,10 @@ def test_load_image_for_all_base_specs():
         spec = ModelSpec.get(name, preprocess_args=[1, 2, 3])
         image_data = spec.load_image('tests/files/cat.jpg')
         assert image_data.any()
+
+
+def test_model_inception_v3():
+    assert_model_predict('inception_resnet_v2', 1000)
 
 
 def test_model_inception_v3():
