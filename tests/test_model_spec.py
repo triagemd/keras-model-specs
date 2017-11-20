@@ -5,6 +5,7 @@ from keras.applications.mobilenet import MobileNet
 from keras.optimizers import SGD
 
 from keras_model_specs import ModelSpec
+import keras_model_specs.model_spec as model_spec
 
 
 EXPECTED_BASE_SPECS = [
@@ -20,17 +21,24 @@ EXPECTED_BASE_SPECS = [
 ]
 
 
-def assert_model_predict(spec_name, expected_classes):
+def assert_lists_same_items(list1, list2):
+    assert sorted(list1) == sorted(list2)
+
+
+def assert_model_predict(spec_name, num_expected_classes):
     spec = ModelSpec.get(spec_name, preprocess_args=[1, 2, 3])
     model = spec.klass()
     sgd = SGD(lr=1e-2, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
     image_data = spec.load_image('tests/files/cat.jpg')
     out = model.predict(image_data)
-    assert len(out.tolist()[0]) == expected_classes
+    assert len(out.tolist()[0]) == num_expected_classes
 
 
 def test_has_all_base_specs():
+    assert_lists_same_items(model_spec.BASE_SPECS.keys(), EXPECTED_BASE_SPECS)
+    assert_lists_same_items(model_spec.BASE_SPEC_NAMES, EXPECTED_BASE_SPECS)
+
     for name in EXPECTED_BASE_SPECS:
         spec = ModelSpec.get(name)
         assert spec is not None
@@ -80,7 +88,7 @@ def test_load_image_for_all_base_specs():
         assert image_data.any()
 
 
-def test_model_inception_v3():
+def test_model_inception_resnet_v2():
     assert_model_predict('inception_resnet_v2', 1000)
 
 

@@ -2,6 +2,7 @@ import os
 import json
 import numpy as np
 import importlib
+import copy
 
 from six import string_types
 from keras.preprocessing.image import load_img
@@ -33,13 +34,16 @@ PREPROCESS_FUNCTIONS = {
 SPEC_FIELDS = ['name', 'klass', 'target_size', 'preprocess_func', 'preprocess_args']
 
 
+with open(os.path.join(os.path.split(__file__)[0], 'model_specs.json')) as file:
+    BASE_SPECS = json.load(file)
+    BASE_SPEC_NAMES = BASE_SPECS.keys()
+
+
 class ModelSpec(object):
 
     @classmethod
     def get(cls, base_spec_name, **overrides):
-        with open(os.path.join(os.path.split(__file__)[0], 'model_specs.json')) as file:
-            base_specs = json.load(file)
-        spec = base_specs.get(base_spec_name, {})
+        spec = copy.copy(BASE_SPECS.get(base_spec_name, {}))
         if len(spec) == 0 and len(overrides) == 0:
             return None
         spec['name'] = base_spec_name

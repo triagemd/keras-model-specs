@@ -3,4 +3,4 @@
 ARGS="${@:-tests/}"
 set -e
 PYTHONPATH="." pytest $ARGS
-flake8 --max-line-length 50000 keras_model_specs
+flake8 --max-line-length 50000 keras_model_specs tests
