@@ -22,21 +22,25 @@
   "resnet50": {
     "klass": "keras.applications.resnet50.ResNet50",
     "preprocess_func": "mean_subtraction",
+    "preprocess_args": [103.939, 116.779, 123.68],
     "target_size": [224, 224, 3]
   },
   "resnet152": {
     "klass": "keras_model_specs.models.resnet152.ResNet152",
     "preprocess_func": "mean_subtraction",
+    "preprocess_args": [103.939, 116.779, 123.68],
     "target_size": [224, 224, 3]
   },
   "vgg16": {
     "klass": "keras.applications.vgg16.VGG16",
     "preprocess_func": "mean_subtraction",
+    "preprocess_args": [103.939, 116.779, 123.68],
     "target_size": [224, 224, 3]
   },
   "vgg19": {
     "klass": "keras.applications.vgg19.VGG19",
     "preprocess_func": "mean_subtraction",
+    "preprocess_args": [103.939, 116.779, 123.68],
     "target_size": [224, 224, 3]
   },
   "xception": {
