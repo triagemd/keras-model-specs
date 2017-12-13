@@ -42,6 +42,31 @@ def test_has_all_base_specs():
     for name in EXPECTED_BASE_SPECS:
         spec = ModelSpec.get(name)
         assert spec is not None
+        assert spec.name == name
+
+
+def test_as_json_mobilenet_v1():
+    spec = ModelSpec.get('mobilenet_v1')
+    expected = {
+        'name': 'mobilenet_v1',
+        'klass': 'keras.applications.mobilenet.MobileNet',
+        'preprocess_args': None,
+        'preprocess_func': 'between_plus_minus_1',
+        'target_size': [224, 224, 3]
+    }
+    assert spec.as_json() == expected
+
+
+def test_as_json_resnet50():
+    spec = ModelSpec.get('resnet50')
+    expected = {
+        'name': 'resnet50',
+        'klass': 'keras.applications.resnet50.ResNet50',
+        'preprocess_args': [103.939, 116.779, 123.68],
+        'preprocess_func': 'mean_subtraction',
+        'target_size': [224, 224, 3]
+    }
+    assert spec.as_json() == expected
 
 
 def test_returns_none_for_nonexistent_and_spec():
