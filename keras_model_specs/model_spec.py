@@ -67,6 +67,15 @@ class ModelSpec(object):
         if isinstance(self.klass, string_types):
             self.klass = self._get_module_class(self.klass)
 
+    def as_json(self):
+        return {
+            'name': self.name,
+            'klass': '.'.join([self.klass.__module__, self.klass.__name__]),
+            'target_size': self.target_size,
+            'preprocess_func': self.preprocess_func,
+            'preprocess_args': self.preprocess_args
+        }
+
     def load_image(self, image_path):
         img = load_img(image_path, target_size=self.target_size[:2])
         image_data = np.asarray(img, dtype=np.float32)
