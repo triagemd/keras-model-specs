@@ -9,10 +9,15 @@ import keras_model_specs.model_spec as model_spec
 
 
 EXPECTED_BASE_SPECS = [
+    'densenet_121',
+    'densenet_169',
+    'densenet_201',
     'inception_resnet_v2',
     'inception_v3',
     'inception_v4',
     'mobilenet_v1',
+    'nasnet_large',
+    'nasnet_mobile',
     'xception',
     'resnet50',
     'resnet152',
@@ -113,6 +118,18 @@ def test_load_image_for_all_base_specs():
         assert image_data.any()
 
 
+def test_model_densenet_121():
+    assert_model_predict('densenet_121', 1000)
+
+
+def test_model_densenet_169():
+    assert_model_predict('densenet_169', 1000)
+
+
+def test_model_densenet_201():
+    assert_model_predict('densenet_201', 1000)
+
+
 def test_model_inception_resnet_v2():
     assert_model_predict('inception_resnet_v2', 1000)
 
@@ -127,6 +144,14 @@ def test_model_inception_v4():
 
 def test_model_mobilenet_v1():
     assert_model_predict('mobilenet_v1', 1000)
+
+
+def test_model_nasnet_large():
+    assert_model_predict('nasnet_large', 1000)
+
+
+def test_model_nasnet_mobile():
+    assert_model_predict('nasnet_mobile', 1000)
 
 
 def test_model_resnet50():
