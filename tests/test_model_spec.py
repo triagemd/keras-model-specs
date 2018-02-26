@@ -118,14 +118,17 @@ def test_load_image_for_all_base_specs():
         assert image_data.any()
 
 
+@pytest.mark.skipif('CI' in os.environ, reason='requires too much memory')
 def test_model_densenet_121():
     assert_model_predict('densenet_121')
 
 
+@pytest.mark.skipif('CI' in os.environ, reason='requires too much memory')
 def test_model_densenet_169():
     assert_model_predict('densenet_169')
 
 
+@pytest.mark.skipif('CI' in os.environ, reason='requires too much memory')
 def test_model_densenet_201():
     assert_model_predict('densenet_201')
 
