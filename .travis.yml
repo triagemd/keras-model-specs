@@ -8,6 +8,7 @@ python:
 
 before_install:
   - script/up
+  - pip install --upgrade tensorflow
 
 script:
   - script/test
