@@ -1,5 +1,6 @@
 import pytest
 import os
+import tensorflow as tf
 
 from keras.applications.mobilenet import MobileNet
 from keras.optimizers import SGD
@@ -26,6 +27,9 @@ EXPECTED_BASE_SPECS = [
 ]
 
 
+tf.global_variables_initializer()
+
+
 def assert_lists_same_items(list1, list2):
     assert sorted(list1) == sorted(list2)
 
@@ -36,8 +40,11 @@ def assert_model_predict(spec_name, num_expected_classes=1000):
     sgd = SGD(lr=1e-2, decay=1e-6, momentum=0.9, nesterov=True)
     model.compile(optimizer=sgd, loss='categorical_crossentropy', metrics=['accuracy'])
     image_data = spec.load_image('tests/files/cat.jpg')
-    out = model.predict(image_data)
-    assert len(out.tolist()[0]) == num_expected_classes
+    sess = tf.Session()
+    sess.run(tf.initialize_all_variables())
+    with sess.as_default():
+        out = model.predict(image_data.eval())
+        assert len(out.tolist()[0]) == num_expected_classes
 
 
 def test_has_all_base_specs():
@@ -115,7 +122,8 @@ def test_load_image_for_all_base_specs():
     for name in EXPECTED_BASE_SPECS:
         spec = ModelSpec.get(name, preprocess_args=[1, 2, 3])
         image_data = spec.load_image('tests/files/cat.jpg')
-        assert image_data.any()
+        with tf.Session().as_default():
+            assert image_data.eval().any()
 
 
 @pytest.mark.skipif('CI' in os.environ, reason='requires too much memory')
