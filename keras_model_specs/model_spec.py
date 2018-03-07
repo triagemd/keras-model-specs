@@ -3,6 +3,7 @@ import json
 import numpy as np
 import importlib
 import copy
+import tensorflow as tf
 
 from six import string_types
 from keras.preprocessing.image import load_img
@@ -10,18 +11,18 @@ from keras.preprocessing.image import load_img
 
 def between_plus_minus_1(x, args=None):
     # equivalent to keras.applications.mobilenet.preprocess_input
-    x /= 255.
-    x -= 0.5
-    x *= 2.
+    x = tf.divide(x, 255.)
+    x = tf.subtract(x, 0.5)
+    x = tf.multiply(x, 2.)
     return x
 
 
 def mean_subtraction(x, args=None):
     # equivalent to keras.applications.imagenet_utils.preprocess_input (with channels_first)
     mean_r, mean_g, mean_b = args
-    x -= [mean_r, mean_g, mean_b]
-    x /= 255.
-    x *= 2.
+    x = tf.subtract(x, [mean_r, mean_g, mean_b])
+    x = tf.divide(x, 255.)
+    x = tf.multiply(x, 2.)
     return x
 
 
