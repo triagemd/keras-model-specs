@@ -40,8 +40,8 @@ from .custom_layers import Scale
 
 sys.setrecursionlimit(3000)
 
-WEIGHTS_PATH = 'https://s3.amazonaws.com/keras-models-a5e0b7ad-6cd4-46aa-8d40-40b791f21572/imagenet/resnet152_weights_tf.h5'
-WEIGHTS_PATH_NO_TOP = None
+WEIGHTS_PATH = 'https://github.com/triagemd/keras-model-specs/releases/download/model-files/resnet152_weights_tf.h5'
+WEIGHTS_PATH_NO_TOP = 'https://github.com/triagemd/keras-model-specs/releases/download/model-files/resnet152_weights_tf_notop.h5'
 
 
 def identity_block(input_tensor, kernel_size, filters, stage, block):
@@ -192,10 +192,18 @@ def ResNet152(
                               'your Keras config '
                               'at ~/.keras/keras.json.')
 
-        weights_path = get_file('resnet152_weights_tf.h5', WEIGHTS_PATH, cache_subdir='models',
-                                md5_hash='1d341ac3e61cd7f5338a90db32535ca2')
+        if include_top:
+            weights_path = get_file('resnet152_weights_tf.h5',
+                                    WEIGHTS_PATH,
+                                    cache_subdir='models',
+                                    md5_hash='cdb18a2158b88e392c0905d47dcef965')
+        else:
+            weights_path = get_file('resnet152_weights_tf_notop.h5',
+                                    WEIGHTS_PATH_NO_TOP,
+                                    cache_subdir='models',
+                                    md5_hash='4a90dcdafacbd17d772af1fb44fc2660')
 
-        model.load_weights(weights_path)
+        model.load_weights(weights_path, by_name=True)
 
     if not include_top:
         model.layers.pop()
