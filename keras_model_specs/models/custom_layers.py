@@ -22,11 +22,7 @@
 # SOFTWARE.
 
 from keras.engine import Layer, InputSpec
-
-try:
-    from keras import initializations
-except ImportError:
-    from keras import initializers as initializations
+from keras import initializers
 import keras.backend as K
 
 
