@@ -13,7 +13,7 @@ setup(
     packages=find_packages(exclude=['tests', '.cache', '.venv', '.git', 'dist']),
     include_package_data=True,
     install_requires=[
-        'Keras>=2.1.5',
+        'Keras==2.1.4',
         'h5py',
         'Pillow',
         'six'
