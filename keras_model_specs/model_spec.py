@@ -10,18 +10,18 @@ from keras.preprocessing.image import load_img
 
 def between_plus_minus_1(x, args=None):
     # equivalent to keras.applications.mobilenet.preprocess_input
-    x /= 255.
-    x -= 0.5
-    x *= 2.
+    x = x / 255.
+    x = x - 0.5
+    x = x * 2.
     return x
 
 
 def mean_subtraction(x, args=None):
     # equivalent to keras.applications.imagenet_utils.preprocess_input (with channels_first)
     mean_r, mean_g, mean_b = args
-    x -= [mean_r, mean_g, mean_b]
-    x /= 255.
-    x *= 2.
+    x = x - [mean_r, mean_g, mean_b]
+    x = x / 255.
+    x = x * 2.
     return x
 
 
