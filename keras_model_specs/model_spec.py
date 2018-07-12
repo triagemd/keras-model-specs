@@ -70,7 +70,7 @@ class ModelSpec(object):
     def as_json(self):
         return {
             'name': self.name,
-            'klass': '.'.join([self.klass.__module__, self.klass.__name__]),
+            'klass': '.'.join([self.klass.__module__, self.klass.__name__]) if self.klass else None,
             'target_size': self.target_size,
             'preprocess_func': self.preprocess_func,
             'preprocess_args': self.preprocess_args
