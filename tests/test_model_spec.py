@@ -51,7 +51,7 @@ def test_as_json_mobilenet_v1():
     spec = ModelSpec.get('mobilenet_v1')
     expected = {
         'name': 'mobilenet_v1',
-        'klass': 'keras_applications.mobilenet.MobileNet',
+        'klass': 'keras.applications.mobilenet.MobileNet',
         'preprocess_args': None,
         'preprocess_func': 'between_plus_minus_1',
         'target_size': [224, 224, 3]
@@ -63,7 +63,7 @@ def test_as_json_resnet50():
     spec = ModelSpec.get('resnet50')
     expected = {
         'name': 'resnet50',
-        'klass': 'keras_applications.resnet50.ResNet50',
+        'klass': 'keras.applications.resnet50.ResNet50',
         'preprocess_args': [103.939, 116.779, 123.68],
         'preprocess_func': 'mean_subtraction',
         'target_size': [224, 224, 3]
@@ -79,7 +79,7 @@ def test_returns_none_for_nonexistent_and_spec():
 def test_returns_nonexistent_with_overrides():
     spec = ModelSpec.get(
         'nonexistent_v1',
-        klass='keras_applications.mobilenet.MobileNet',
+        klass='keras.applications.mobilenet.MobileNet',
         target_size=[224, 224, 3],
         preprocess_func='mean_subtraction',
         preprocess_args=[1, 2, 3]
@@ -95,7 +95,7 @@ def test_returns_nonexistent_with_overrides():
 def test_returns_existing_with_overrides():
     spec = ModelSpec.get(
         'mobilenet_v1',
-        klass='keras_applications.mobilenet.MobileNet',
+        klass='keras.applications.mobilenet.MobileNet',
         target_size=[512, 512, 3],
         preprocess_func='mean_subtraction',
         preprocess_args=[1, 2, 3]
