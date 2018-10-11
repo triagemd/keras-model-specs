@@ -56,6 +56,7 @@ class ModelSpec(object):
     def __init__(self, spec):
         self.name = None
         self.klass = None
+        self.str_klass = None
         self.target_size = None
         self.preprocess_func = None
         self.preprocess_args = None
@@ -65,12 +66,17 @@ class ModelSpec(object):
         self.preprocess_input = lambda x: PREPROCESS_FUNCTIONS[self.preprocess_func](x, args=self.preprocess_args)
 
         if isinstance(self.klass, string_types):
+            self.str_klass = self.klass
             self.klass = self._get_module_class(self.klass)
 
     def as_json(self):
+        if self.str_klass:
+            self.klass = self.str_klass
+        else:
+            self.klass = '.'.join([self.klass.__module__, self.klass.__name__]) if self.klass else None
         return {
             'name': self.name,
-            'klass': '.'.join([self.klass.__module__, self.klass.__name__]) if self.klass else None,
+            'klass': self.klass,
             'target_size': self.target_size,
             'preprocess_func': self.preprocess_func,
             'preprocess_args': self.preprocess_args
