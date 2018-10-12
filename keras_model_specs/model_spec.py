@@ -71,12 +71,12 @@ class ModelSpec(object):
 
     def as_json(self):
         if self.str_klass:
-            self.klass = self.str_klass
+            klass = self.str_klass
         else:
-            self.klass = '.'.join([self.klass.__module__, self.klass.__name__]) if self.klass else None
+            klass = '.'.join([self.klass.__module__, self.klass.__name__]) if self.klass else None
         return {
             'name': self.name,
-            'klass': self.klass,
+            'klass': klass,
             'target_size': self.target_size,
             'preprocess_func': self.preprocess_func,
             'preprocess_args': self.preprocess_args
