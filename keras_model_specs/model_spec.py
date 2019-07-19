@@ -31,7 +31,7 @@ PREPROCESS_FUNCTIONS = {
 }
 
 
-SPEC_FIELDS = ['name', 'klass', 'target_size', 'preprocess_func', 'preprocess_args']
+SPEC_FIELDS = ['name', 'klass', 'target_size', 'preprocess_func', 'preprocess_args', 'bgr_order']
 
 
 with open(os.path.join(os.path.split(__file__)[0], 'model_specs.json')) as file:
@@ -60,14 +60,19 @@ class ModelSpec(object):
         self.target_size = None
         self.preprocess_func = None
         self.preprocess_args = None
+        self.bgr_order = False
 
         self.__dict__.update(spec)
-
-        self.preprocess_input = lambda x: PREPROCESS_FUNCTIONS[self.preprocess_func](x, args=self.preprocess_args)
 
         if isinstance(self.klass, string_types):
             self.str_klass = self.klass
             self.klass = self._get_module_class(self.klass)
+
+    def preprocess_input(self, img):
+        result = PREPROCESS_FUNCTIONS[self.preprocess_func](img, args=self.preprocess_args)
+        if self.bgr_order:
+            result = result[..., ::-1]
+        return result
 
     def as_json(self):
         if self.str_klass:
@@ -79,7 +84,8 @@ class ModelSpec(object):
             'klass': klass,
             'target_size': self.target_size,
             'preprocess_func': self.preprocess_func,
-            'preprocess_args': self.preprocess_args
+            'preprocess_args': self.preprocess_args,
+            'bgr_order': self.bgr_order
         }
 
     def load_image(self, image_path):
