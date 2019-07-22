@@ -54,8 +54,7 @@ def test_as_json_mobilenet_v1():
         'klass': 'keras.applications.mobilenet.MobileNet',
         'preprocess_args': None,
         'preprocess_func': 'between_plus_minus_1',
-        'target_size': [224, 224, 3],
-        'bgr_order': False
+        'target_size': [224, 224, 3]
     }
     assert spec.as_json() == expected
 
@@ -67,8 +66,7 @@ def test_as_json_resnet50():
         'klass': 'keras.applications.resnet50.ResNet50',
         'preprocess_args': [103.939, 116.779, 123.68],
         'preprocess_func': 'mean_subtraction',
-        'target_size': [224, 224, 3],
-        'bgr_order': False
+        'target_size': [224, 224, 3]
     }
     assert spec.as_json() == expected
 
@@ -91,7 +89,6 @@ def test_returns_nonexistent_with_overrides():
     assert spec.target_size == [224, 224, 3]
     assert spec.preprocess_func == 'mean_subtraction'
     assert spec.preprocess_args == [1, 2, 3]
-    assert not spec.bgr_order
     assert spec.preprocess_input is not None
 
 
@@ -108,7 +105,6 @@ def test_returns_existing_with_overrides():
     assert spec.target_size == [512, 512, 3]
     assert spec.preprocess_func == 'mean_subtraction'
     assert spec.preprocess_args == [1, 2, 3]
-    assert not spec.bgr_order
     assert spec.preprocess_input is not None
 
 
