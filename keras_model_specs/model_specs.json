@@ -53,8 +53,14 @@
     "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]
   },
+  "resnet101": {
+    "klass": "keras_applications.resnet.ResNet101",
+    "preprocess_func": "bgr_mean_subtraction",
+    "preprocess_args": [123.68, 116.779, 103.939],
+    "target_size": [224, 224, 3]
+  },
   "resnet152": {
-    "klass": "keras_model_specs.models.resnet152.ResNet152",
+    "klass": "keras_applications.resnet.ResNet152",
     "preprocess_func": "bgr_mean_subtraction",
     "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]

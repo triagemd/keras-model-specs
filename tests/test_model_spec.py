@@ -19,6 +19,7 @@ EXPECTED_BASE_SPECS = [
     'nasnet_mobile',
     'xception',
     'resnet50',
+    'resnet101',
     'resnet152',
     'vgg16',
     'vgg19'

@@ -14,6 +14,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'Keras',
+        'Keras-Applications>=1.0.7',
         'h5py',
         'Pillow',
         'six'
