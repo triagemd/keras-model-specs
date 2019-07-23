@@ -62,6 +62,7 @@ class ModelSpec(object):
         spec = copy.copy(BASE_SPECS.get(base_spec_name, {}))
         if len(spec) == 0 and len(overrides) == 0:
             return None
+
         spec['name'] = base_spec_name
         for field in SPEC_FIELDS:
             # Ignore incoming None fields
