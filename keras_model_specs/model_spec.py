@@ -9,25 +9,41 @@ from keras.preprocessing.image import load_img
 
 
 def between_plus_minus_1(x, args=None):
-    # equivalent to keras.applications.mobilenet.preprocess_input
-    x = x / 255.
-    x = x - 0.5
-    x = x * 2.
+    # equivalent to keras_applications.imagenet_utils.preprocess_input with mode=tf
+    x /= 127.5
+    x -= 1.
     return x
 
 
 def mean_subtraction(x, args=None):
-    # equivalent to keras.applications.imagenet_utils.preprocess_input (with channels_first)
+    # subtract means then normalize to between 0 and 2
     mean_r, mean_g, mean_b = args
-    x = x - [mean_r, mean_g, mean_b]
-    x = x / 255.
-    x = x * 2.
+    x -= [mean_r, mean_g, mean_b]
+    x /= 127.5
+    return x
+
+
+def bgr_mean_subtraction(x, args=None):
+    # equivalent to keras.applications.imagenet_utils.preprocess_input with mode=caffe
+    mean_r, mean_g, mean_b = args
+    x -= [mean_r, mean_g, mean_b]
+    x = x[..., ::-1]
+    return x
+
+
+def mean_std_normalization(x, args=None):
+    # equivalent to keras.applications.imagenet_utils.preprocess_input with mode=torch
+    mean_r, mean_g, mean_b, std_r, std_g, std_b = args
+    x -= [mean_r, mean_g, mean_b]
+    x /= [std_r, std_g, std_b]
     return x
 
 
 PREPROCESS_FUNCTIONS = {
     'between_plus_minus_1': between_plus_minus_1,
     'mean_subtraction': mean_subtraction,
+    'bgr_mean_subtraction': bgr_mean_subtraction,
+    'mean_std_normalization': mean_std_normalization
 }
 
 
@@ -46,6 +62,7 @@ class ModelSpec(object):
         spec = copy.copy(BASE_SPECS.get(base_spec_name, {}))
         if len(spec) == 0 and len(overrides) == 0:
             return None
+
         spec['name'] = base_spec_name
         for field in SPEC_FIELDS:
             # Ignore incoming None fields

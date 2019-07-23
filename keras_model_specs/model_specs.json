@@ -1,20 +1,20 @@
 {
   "densenet_121": {
     "klass": "keras.applications.densenet.DenseNet121",
-    "preprocess_func": "mean_subtraction",
-    "preprocess_args": [103.939, 116.779, 123.68],
+    "preprocess_func": "mean_std_normalization",
+    "preprocess_args": [123.68, 116.779, 103.939, 58.4, 57.12, 57.38],
     "target_size": [224, 224, 3]
   },
   "densenet_169": {
     "klass": "keras.applications.densenet.DenseNet169",
-    "preprocess_func": "mean_subtraction",
-    "preprocess_args": [103.939, 116.779, 123.68],
+    "preprocess_func": "mean_std_normalization",
+    "preprocess_args": [123.68, 116.779, 103.939, 58.4, 57.12, 57.38],
     "target_size": [224, 224, 3]
   },
    "densenet_201": {
     "klass": "keras.applications.densenet.DenseNet201",
-    "preprocess_func": "mean_subtraction",
-    "preprocess_args": [103.939, 116.779, 123.68],
+    "preprocess_func": "mean_std_normalization",
+    "preprocess_args": [123.68, 116.779, 103.939, 58.4, 57.12, 57.38],
     "target_size": [224, 224, 3]
   },
   "inception_resnet_v2": {
@@ -49,26 +49,32 @@
   },
   "resnet50": {
     "klass": "keras.applications.resnet50.ResNet50",
-    "preprocess_func": "mean_subtraction",
-    "preprocess_args": [103.939, 116.779, 123.68],
+    "preprocess_func": "bgr_mean_subtraction",
+    "preprocess_args": [123.68, 116.779, 103.939],
+    "target_size": [224, 224, 3]
+  },
+  "resnet101": {
+    "klass": "keras_applications.resnet.ResNet101",
+    "preprocess_func": "bgr_mean_subtraction",
+    "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]
   },
   "resnet152": {
-    "klass": "keras_model_specs.models.resnet152.ResNet152",
-    "preprocess_func": "mean_subtraction",
-    "preprocess_args": [103.939, 116.779, 123.68],
+    "klass": "keras_applications.resnet.ResNet152",
+    "preprocess_func": "bgr_mean_subtraction",
+    "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]
   },
   "vgg16": {
     "klass": "keras.applications.vgg16.VGG16",
-    "preprocess_func": "mean_subtraction",
-    "preprocess_args": [103.939, 116.779, 123.68],
+    "preprocess_func": "bgr_mean_subtraction",
+    "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]
   },
   "vgg19": {
     "klass": "keras.applications.vgg19.VGG19",
-    "preprocess_func": "mean_subtraction",
-    "preprocess_args": [103.939, 116.779, 123.68],
+    "preprocess_func": "bgr_mean_subtraction",
+    "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]
   },
   "xception": {
