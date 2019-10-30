@@ -10,7 +10,7 @@ A helper package for managing Keras model base architectures with overrides for 
 Install the package through pip
 
 ```
-pip install keras-model-specs`
+pip install keras-model-specs
 ```
 
 Example
