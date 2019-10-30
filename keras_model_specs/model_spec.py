@@ -87,7 +87,7 @@ class ModelSpec(object):
             self.model = self._get_module_class(self.model)
 
     def as_json(self):
-        if self.str_cls:
+        if self.str_model:
             model = self.str_model
         else:
             model = '.'.join([self.model.__module__, self.model.__name__]) if self.model else None
