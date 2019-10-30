@@ -68,19 +68,16 @@
   "resnet50_v2": {
     "model": "tensorflow.keras.applications.resnet_v2.ResNet50V2",
     "preprocess_func": "between_plus_minus_1",
-    "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]
   },
   "resnet101_v2": {
     "model": "tensorflow.keras.applications.resnet_v2.ResNet101V2",
     "preprocess_func": "between_plus_minus_1",
-    "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]
   },
   "resnet152_v2": {
     "model": "tensorflow.keras.applications.resnet_v2.ResNet152V2",
     "preprocess_func": "between_plus_minus_1",
-    "preprocess_args": [123.68, 116.779, 103.939],
     "target_size": [224, 224, 3]
   },
   "vgg16": {
