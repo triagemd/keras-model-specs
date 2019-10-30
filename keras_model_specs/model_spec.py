@@ -16,7 +16,7 @@ def between_plus_minus_1(x, args=None):
 
 
 def mean_subtraction(x, args=None):
-    # subtract means then normalize to between 0 and 2
+    # subtract means then normalize to between -2 and 2
     mean_r, mean_g, mean_b = args
     x -= [mean_r, mean_g, mean_b]
     x /= 127.5
