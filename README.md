@@ -10,7 +10,7 @@ A helper package for managing Keras model base architectures with overrides for 
 Install the package through pip
 
 ```
-pip install keras-model-specs`
+pip install keras-model-specs
 ```
 
 Example
@@ -28,5 +28,4 @@ print(model_spec.target_size)
 
 # Load, resize and pre-process the image 
 image_data = model_spec.load_image('tests/files/cat.jpg')
-
 ```
