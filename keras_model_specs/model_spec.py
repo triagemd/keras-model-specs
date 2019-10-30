@@ -5,26 +5,26 @@ import importlib
 import copy
 
 from six import string_types
-from keras.preprocessing.image import load_img
+from tensorflow.keras.preprocessing.image import load_img
 
 
 def between_plus_minus_1(x, args=None):
-    # equivalent to keras_applications.imagenet_utils.preprocess_input with mode=tf
+    # equivalent to keras_applications.imagenet_utils.preprocess_input with mode=tf, output range [-1, 1]
     x /= 127.5
     x -= 1.
     return x
 
 
 def mean_subtraction(x, args=None):
-    # subtract means then normalize to between 0 and 2
+    # subtract means then normalize to between -1 and 1
     mean_r, mean_g, mean_b = args
     x -= [mean_r, mean_g, mean_b]
-    x /= 127.5
+    x /= 255.
     return x
 
 
 def bgr_mean_subtraction(x, args=None):
-    # equivalent to keras.applications.imagenet_utils.preprocess_input with mode=caffe
+    # equivalent to keras.applications.imagenet_utils.preprocess_input with mode=caffe, output range [-255, 255]
     mean_r, mean_g, mean_b = args
     x -= [mean_r, mean_g, mean_b]
     x = x[..., ::-1]
@@ -47,7 +47,7 @@ PREPROCESS_FUNCTIONS = {
 }
 
 
-SPEC_FIELDS = ['name', 'klass', 'target_size', 'preprocess_func', 'preprocess_args']
+SPEC_FIELDS = ['name', 'model', 'target_size', 'preprocess_func', 'preprocess_args']
 
 
 with open(os.path.join(os.path.split(__file__)[0], 'model_specs.json')) as file:
@@ -72,8 +72,8 @@ class ModelSpec(object):
 
     def __init__(self, spec):
         self.name = None
-        self.klass = None
-        self.str_klass = None
+        self.model = None
+        self.str_model = None
         self.target_size = None
         self.preprocess_func = None
         self.preprocess_args = None
@@ -82,18 +82,18 @@ class ModelSpec(object):
 
         self.preprocess_input = lambda x: PREPROCESS_FUNCTIONS[self.preprocess_func](x, args=self.preprocess_args)
 
-        if isinstance(self.klass, string_types):
-            self.str_klass = self.klass
-            self.klass = self._get_module_class(self.klass)
+        if isinstance(self.model, string_types):
+            self.str_model = self.model
+            self.model = self._get_module_class(self.model)
 
     def as_json(self):
-        if self.str_klass:
-            klass = self.str_klass
+        if self.str_cls:
+            model = self.str_model
         else:
-            klass = '.'.join([self.klass.__module__, self.klass.__name__]) if self.klass else None
+            model = '.'.join([self.model.__module__, self.model.__name__]) if self.model else None
         return {
             'name': self.name,
-            'klass': klass,
+            'model': model,
             'target_size': self.target_size,
             'preprocess_func': self.preprocess_func,
             'preprocess_args': self.preprocess_args
