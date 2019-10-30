@@ -28,5 +28,4 @@ print(model_spec.target_size)
 
 # Load, resize and pre-process the image 
 image_data = model_spec.load_image('tests/files/cat.jpg')
-
 ```
