@@ -7,10 +7,15 @@ A helper package for managing Keras model base architectures with overrides for 
 
 ## Code usage
 
-Install the package through pip
+Install the package through pip. The latest version expects to use tf2.0.
 
 ```
 pip install keras-model-specs
+```
+
+To use use it with tf1.x install by:
+```
+pip install keras-model-specs==1.2.0
 ```
 
 Example
