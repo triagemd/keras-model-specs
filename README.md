@@ -15,7 +15,7 @@ pip install keras-model-specs
 
 To use use it with tf1.x install by:
 ```
-pip install keras-model-specs==1.12
+pip install keras-model-specs==1.2.0
 ```
 
 Example
