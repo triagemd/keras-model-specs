@@ -5,7 +5,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='keras-model-specs',
-    version='2.0.0',
+    version='2.0.1',
     description='A helper package for managing tf.keras model base architectures with overrides for target size '
                 'and preprocessing functions.',
     author='Triage Technologies Inc.',
