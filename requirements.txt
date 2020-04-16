@@ -7,3 +7,4 @@ autoflake
 pep8
 autopep8
 tensorflow~=1.13.0
+git+https://github.com/keras-team/keras-applications
