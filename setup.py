@@ -14,7 +14,8 @@ setup(
     packages=find_packages(exclude=['tests', '.cache', '.venv', '.git', 'dist']),
     include_package_data=True,
     install_requires=[
-        'tensorflow>=2.0',
+        'keras',
+        'keras-applications',
         'h5py',
         'Pillow',
         'six'
