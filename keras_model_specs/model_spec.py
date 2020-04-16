@@ -1,11 +1,13 @@
 import os
+import copy
 import json
+import keras
 import numpy as np
 import importlib
-import copy
+
 
 from six import string_types
-from tensorflow.keras.preprocessing.image import load_img
+from keras.preprocessing.image import load_img
 
 
 def between_plus_minus_1(x, args=None):
@@ -85,6 +87,10 @@ class ModelSpec(object):
         self.target_size = None
         self.preprocess_func = None
         self.preprocess_args = None
+        self.keras_kwargs = {'backend': keras.backend,
+                             'layers': keras.layers,
+                             'models': keras.models,
+                             'utils': keras.utils}
 
         self.__dict__.update(spec)
 
@@ -104,7 +110,7 @@ class ModelSpec(object):
             'model': model,
             'target_size': self.target_size,
             'preprocess_func': self.preprocess_func,
-            'preprocess_args': self.preprocess_args
+            'preprocess_args': self.preprocess_args,
         }
 
     def load_image(self, image_path):
