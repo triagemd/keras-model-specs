@@ -16,7 +16,7 @@ setup(
     install_requires=[
         'keras',
         'keras-applications',
-        'tensorflow~=1.1.12',
+        'tensorflow~=1.12.0',
         'h5py',
         'Pillow',
         'six'
