@@ -1,8 +1,9 @@
+import keras
 import keras_model_specs.model_spec as model_spec
 
 
 from keras_model_specs import ModelSpec
-from tensorflow.keras.applications.mobilenet import MobileNet
+from keras_applications.mobilenet import MobileNet
 
 
 def assert_lists_same_items(list1, list2):
@@ -20,13 +21,17 @@ def test_has_all_base_specs():
         assert spec.target_size is not None
         assert spec.preprocess_func is not None
         assert spec.preprocess_input is not None
+        assert spec.keras_kwargs == {'backend': keras.backend,
+                                     'layers': keras.layers,
+                                     'models': keras.models,
+                                     'utils': keras.utils}
 
 
 def test_as_json_mobilenet_v1():
     spec = ModelSpec.get('mobilenet_v1')
     expected = {
         'name': 'mobilenet_v1',
-        'model': 'tensorflow.keras.applications.mobilenet.MobileNet',
+        'model': 'keras_applications.mobilenet.MobileNet',
         'preprocess_args': None,
         'preprocess_func': 'between_plus_minus_1',
         'target_size': [224, 224, 3]
@@ -42,7 +47,7 @@ def test_returns_none_for_nonexistent_and_spec():
 def test_returns_nonexistent_with_overrides():
     spec = ModelSpec.get(
         'nonexistent_v1',
-        model='tensorflow.keras.applications.mobilenet.MobileNet',
+        model='keras_applications.mobilenet.MobileNet',
         target_size=[224, 224, 3],
         preprocess_func='mean_subtraction',
         preprocess_args=[1, 2, 3]
@@ -53,12 +58,16 @@ def test_returns_nonexistent_with_overrides():
     assert spec.preprocess_func == 'mean_subtraction'
     assert spec.preprocess_args == [1, 2, 3]
     assert spec.preprocess_input is not None
+    assert spec.keras_kwargs == {'backend': keras.backend,
+                                 'layers': keras.layers,
+                                 'models': keras.models,
+                                 'utils': keras.utils}
 
 
 def test_returns_existing_with_overrides():
     spec = ModelSpec.get(
         'mobilenet_v1',
-        model='tensorflow.keras.applications.mobilenet.MobileNet',
+        model='keras_applications.mobilenet.MobileNet',
         target_size=[512, 512, 3],
         preprocess_func='mean_subtraction',
         preprocess_args=[1, 2, 3]
@@ -69,6 +78,10 @@ def test_returns_existing_with_overrides():
     assert spec.preprocess_func == 'mean_subtraction'
     assert spec.preprocess_args == [1, 2, 3]
     assert spec.preprocess_input is not None
+    assert spec.keras_kwargs == {'backend': keras.backend,
+                                 'layers': keras.layers,
+                                 'models': keras.models,
+                                 'utils': keras.utils}
 
 
 def test_load_image_for_all_base_specs():
