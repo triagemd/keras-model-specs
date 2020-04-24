@@ -51,9 +51,10 @@ def mean_std_normalization(x, args=None):
 
 PREPROCESS_FUNCTIONS = {
     'between_plus_minus_1': between_plus_minus_1,
-    'mean_subtraction': mean_subtraction,
     'bgr_mean_subtraction': bgr_mean_subtraction,
-    'mean_std_normalization': mean_std_normalization
+    'mean_std_normalization': mean_std_normalization,
+    'mean_subtraction': mean_subtraction,
+    'mean_subtraction_plus_minus_1': mean_subtraction_plus_minus_1
 }
 
 
